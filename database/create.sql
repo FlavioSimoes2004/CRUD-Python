@@ -1,0 +1,35 @@
+CREATE TABLE IF NOT EXISTS usuario (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(15) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS funcionario (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INTEGER NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuario (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS livro (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    genero VARCHAR(255) NOT NULL,
+    autor VARCHAR(255) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    data_publicacao DATE NOT NULL,
+    quantidade INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS emprestimo (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INTEGER NOT NULL,
+    id_livro INTEGER NOT NULL,
+    data_emprestimo DATE NOT NULL,
+    data_prazo DATE NOT NULL,
+    data_entrega DATE,
+    emprestimo_status VARCHAR(50) NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuario (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_livro) REFERENCES livro (id) ON DELETE CASCADE
+);
