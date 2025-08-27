@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS usuario;
+
+DROP TABLE IF EXISTS funcionario;
+
+DROP TABLE IF EXISTS livro;
+
+DROP TABLE IF EXISTS emprestimo;

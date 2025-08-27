@@ -8,11 +8,7 @@ INSERT INTO usuario (nome, cpf, email, senha) VALUES
 
 -- Inserir 5 funcionários (assumindo que os usuários já tenham IDs 1 a 5)
 INSERT INTO funcionario (id_usuario) VALUES
-(1),
-(2),
-(3),
-(4),
-(5);
+(1);
 
 -- Inserir 5 livros
 INSERT INTO livro (nome, genero, autor, descricao, data_publicacao, quantidade) VALUES
