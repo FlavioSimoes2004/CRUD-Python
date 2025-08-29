@@ -7,9 +7,45 @@
 
     <body>
         <form>
-            
+            <p id="status">STATUS: NAO LOGADO</p>
+            <label for="email">Email:</label>
+            <input type="text" id="in_email" name="in_email">
+            <label for="in_senha">Senha</label>
+            <input type="text" id="in_senha" name="in_senha">
+            <input type="submit">
         </form>
     </body>
 
     <footer></footer>
 </html>
+
+<script>
+    console.log('hello');
+
+    document.getElementsByTagName('form')[0].addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('in_email').value;
+        const senha = document.getElementById('in_senha').value;
+
+        try {
+            const response = await fetch('/usuarios');
+            const usuarios = await response.json();
+
+            const usuarioValido = usuarios.find(u => u[3] === email && u[4] === senha);
+
+            if(usuarioValido)
+            {
+                document.getElementsByTagName('p')[0].innerText = 'LOGADO';
+            }
+            else
+            {
+                document.getElementsByTagName('p')[0].innerText = 'EMAIL OU SENHA INCORRETO'
+            }
+        }
+        catch (error){
+            console.error('ERROR LOGIN');
+            document.getElementsByTagName('p')[0].innerText = 'ERROR';
+        }
+    })
+</script>

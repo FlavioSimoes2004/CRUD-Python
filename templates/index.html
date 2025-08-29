@@ -27,7 +27,7 @@
                 width: 50%;
                 background-color: brown;
                 margin: 0 auto;
-                text-align: center;
+                /*text-align: center;*/
             }
 
             #container_livros div{
@@ -52,6 +52,9 @@
         </div>
 
         <div id="container_livros">
+            <div>
+
+            </div>
         </div>
     </body>
 
@@ -78,6 +81,7 @@
         render() {
             this.criarLivro();
             containerLivro.append(this.div);
+            console.log('criado livro')
         }
 
         criarLivro() {
@@ -85,13 +89,39 @@
             this.txt = document.createElement('pre')
 
             this.txt.innerText = this.nome + '\n'
-            + this.genero + '\n' + this.autor
-            + '\n' + this.descricao;
+            + this.genero + '\n' + this.autor;
 
             this.div.append(this.txt);
         }
     }
 
-    new Livro('teste', 'a', 'a', 'a', 'a', 'a');
-    new Livro('teste', 'a', 'a', 'a', 'a', 'a');
+    function getLivros() {
+        fetch('/livros', {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if(!response.ok)
+            {
+                alert('ERROR: /livros')
+                throw new error('ERROR: /livros')
+            }
+
+            return response.json()
+        })
+        .then(livros => {
+            for(let i = 0; i < livros.length; i++)
+            {
+                new Livro(livros[i][1], livros[i][2], livros[i][3], livros[0][4], livros[0][5], livros[0][6]);
+            }
+        })
+        .catch(error => {
+            console.error('ERROR: /livros', error);
+        })
+    }
+
+    //getLivros();
+    //new Livro('a', 'a', 'a', 'a', 'a', 'a');
 </script>
