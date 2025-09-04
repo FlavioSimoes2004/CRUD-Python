@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+
+        </style>
+    </head>
+
+    <body>
+        <form>
+            <label for="in_nome">Nome</label>
+            <input type="text" id="in_nome" name="in_nome">
+            <label for="in_cpf">CPF</label>
+            <input type="text" id="in_cpf" name="in_cpf">
+            <label for="in_email">Email</label>
+            <input type="email" id="in_email" name="in_email">
+            <label for="in_senha">Senha</label>
+            <input type="password" id="in_senha" name="in_senha">
+            <button id="botao">adicionar</button>
+        </form>
+    </body>
+
+    <footer></footer>
+</html>
+
+<script>
+    const in_nome = document.getElementById('in_nome');
+    const in_cpf = document.getElementById('in_cpf');
+    const in_email = document.getElementById('in_email');
+    const in_senha = document.getElementById('in_senha');
+
+    function insert(){
+        const user = {
+            id: -1,
+            nome: in_nome.value,
+            cpf: in_cpf.value,
+            email: in_email.value,
+            senha: in_senha.value
+        };
+
+        fetch('/usuarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => {
+            if(!response.ok){
+                alert('error ao criar usuario');
+                throw new Error('criacao usuario');
+            }
+
+            return response.json();
+        })
+        .then(usuario => {
+            console.log('usuario inserido: ' + user);
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
+    document.getElementById('botao').onclick = insert;
+</script>
