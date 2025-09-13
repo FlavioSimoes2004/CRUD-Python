@@ -28,6 +28,10 @@ def loginPage():
 def postUserPage():
     return render_template('post.html')
 
+@app.route('/update_passwd')
+def updateUserPasswd():
+    return render_template('update.html')
+
 # ---------------------------------- GETs
 
 @app.route('/usuarios', methods=['GET'])
@@ -79,6 +83,40 @@ def postUser():
         return jsonify(new_usuario), 201
     else:
         return jsonify({"error": "Method not allowed"}), 405
+    
+
+# ---------------------------- UPDATE
+
+@app.route('/usuarios', methods=['PUT'])
+def updateUser():
+    data = request.get_json()
+
+    email = data.get('email')
+    old_passwd = data.get('old_passwd')
+    new_passwd = data.get('new_passwd')
+
+    if not email:
+        return jsonify({"error": "Email is required to identify the user"}), 400
+
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        UPDATE usuario 
+        SET senha = %s
+        WHERE email = %s AND senha = %s
+    """, (new_passwd, email, old_passwd))
+
+    mysql.connection.commit()
+
+    # Return updated user
+    cur.execute("SELECT * FROM usuario WHERE email = %s", (email,))
+    updated_user = cur.fetchone()
+    cur.close()
+
+    if updated_user:
+        return jsonify(updated_user), 200
+    else:
+        return jsonify({"error": "User not found"}), 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)

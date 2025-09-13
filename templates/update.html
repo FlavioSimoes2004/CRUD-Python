@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+
+        </style>
+    </head>
+
+    <body>
+        <form>
+            <lable for="in_email">Email</lable>
+            <input type="text" id="in_email" name="in_email">
+            <label for="old_passwd">Senha antiga</label>
+            <input type="password" id="old_passwd" name="old_passwd">
+            <label for="new_passwd">Senha nova</label>
+            <input type="password" id="new_passwd" name="new_passwd">
+            <button id="botao">atualizar senha</button>
+        </form>
+    </body>
+
+    <footer></footer>
+</html>
+
+<script>
+    const in_email = document.getElementById('in_email');
+    const old_passwd = document.getElementById('old_passwd');
+    const new_passwd = document.getElementById('new_passwd');
+
+    function update() {
+        const data = {
+            email: in_email.value,
+            old_passwd: old_passwd.value,
+            new_passwd: new_passwd.value
+        };
+
+        fetch('/usuarios', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(response => {
+            console.log("Usuário atualizado:", response);
+        })
+        .catch(error => {
+            console.error("Erro ao atualizar:", error);
+        });
+    }
+
+
+    document.getElementById('botao').onclick = update;
+</script>
