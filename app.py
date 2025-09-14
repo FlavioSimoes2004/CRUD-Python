@@ -32,6 +32,10 @@ def postUserPage():
 def updateUserPasswd():
     return render_template('update.html')
 
+@app.route('/delete_page')
+def deletePage():
+    return render_template('delete.html')
+
 # ---------------------------------- GETs
 
 @app.route('/usuarios', methods=['GET'])
@@ -120,7 +124,7 @@ def updateUser():
 
 # ---------------------------------------- DELETE
 
-@app.route("/delete_user", methods=[''])
+@app.route("/delete_user", methods=['DELETE'])
 def deleteUser():
     data = request.get_json()
 
@@ -132,7 +136,7 @@ def deleteUser():
     cur.execute("""
         DELETE FROM usuario
         WHERE cpf = %s AND email = %s AND senha = %s
-    """, (cpf, email, passwd))
+    """, (cpf, email, senha))
 
     mysql.connection.commit()
 

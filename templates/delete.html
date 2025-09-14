@@ -5,18 +5,55 @@
     </head>
 
     <body>
-
+        <form>
+            <label for="in_email">Email</label>
+            <input type="text" id="in_email" name="in_email">
+            <label for="in_cpf">CPF</label>
+            <input type="text" id="in_cpf" name="in_cpf">
+            <label for="in_senha">Senha</label>
+            <input type="password" id="in_senha" name="in_senha">
+            <button id="botao">deletar</button>
+        </form>
     </body>
 
     <footer></footer>
 </html>
 
 <script>
+    const email = document.getElementById('in_email');
+    const cpf = document.getElementById('in_cpf');
+    const senha = document.getElementById('in_senha');
+
     function deleteUser(){
         const data = {
-            email: 1,
-            cpf: 1,
-            senha: 1
+            email: email.value,
+            cpf: cpf.value,
+            senha: senha.value
         };
+
+        fetch('/delete_user', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if(!response.ok)
+            {
+                alert('Erro ao delete usuario');
+                throw new Error('Erro ao delete usuario');      
+            }
+
+            return response.json()
+        })
+        .then(usuario => {
+            console.log('usuario deletado');
+        })
+        .catch(error => {
+            console.error(error);
+        })
     }
+
+    document.getElementById('botao').onclick = deleteUser;
 </script>
