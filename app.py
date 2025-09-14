@@ -118,5 +118,23 @@ def updateUser():
         return jsonify({"error": "User not found"}), 404
 
 
+# ---------------------------------------- DELETE
+
+@app.route("/delete_user", methods=[''])
+def deleteUser():
+    data = request.get_json()
+
+    cpf = data.get('cpf')
+    email = data.get('email')
+    senha = data.get('senha')
+    
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        DELETE FROM usuario
+        WHERE cpf = %s AND email = %s AND senha = %s
+    """, (cpf, email, passwd))
+
+    mysql.connection.commit()
+
 if __name__ == '__main__':
     app.run(debug=True)
