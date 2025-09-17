@@ -46,6 +46,25 @@ def get_usuarios():
     cur.close()
     return jsonify(data)
 
+@app.route('/usuario', methods=['GET'])
+def get_one_user():
+    email = request.args.get('email')
+    senha = request.args.get('senha')
+
+    if not email or not senha:
+        return jsonify({'error': 'Email e senha são obrigatórios'}), 400
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id FROM usuario WHERE email=%s AND senha=%s", (email, senha))
+    
+    user = cur.fetchone()
+    cur.close()
+
+    if user:
+        return jsonify({'id': user[0]})
+    else:
+        return jsonify({'error': 'Usuário não encontrado'}), 404
+
 @app.route('/livros', methods=['GET'])
 def get_livros():
     cur = mysql.connection.cursor()
