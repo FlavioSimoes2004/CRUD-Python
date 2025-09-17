@@ -20,43 +20,63 @@
 </html>
 
 <script>
-    userId = localStorage.getItem('userId');
-    if(userId === null || userId === -1)
-    {
-        console.log('user id e null');
-    }
-    else
-    {
-        console.log('user id NAO e null');
-    }
+    let userId = localStorage.getItem('userId');
+    console.log(userId);
 
     const email = document.getElementById('in_email');
     const senha = document.getElementById('in_senha');
+    const botao = document.getElementById('botao');
 
     function test(event){
         event.preventDefault();
-        fetch(`/usuario?email=${email.value}&senha=${senha.value}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if(!response.ok){
-                alert('Erro ao pegar usuario');
-                throw new Error('Erro ao pegar usuario');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('usuario id = ' + data.id);
-            localStorage.setItem('userId', data.id);
-            console.log('ID encontrado e setado');
-        })
-        .catch(error => {
-            console.error('Error fetching user ID:', error);
-        });
+        if(userId === -1 || isNaN(userId))
+        {
+            const url = '/usuario?email='+email.value+'&senha='+senha.value;
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if(!response.ok){
+                    alert('Erro ao pegar usuario');
+                    throw new Error('Erro ao pegar usuario');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('usuario id = ' + data.id);
+                localStorage.setItem('userId', data.id);
+                userId = localStorage.getItem('userId')
+                console.log('ID encontrado e setado');
+                check_status();
+            })
+            .catch(error => {
+                console.error('Error fetching user ID:', error);
+            });
+        }
+        else
+        {
+            userId = -1;
+            localStorage.setItem('userId', -1);
+            check_status();
+        }
     }
 
-    document.getElementById('botao').addEventListener('click', test);
+    function check_status(){
+        if(userId === -1 || isNaN(userId))
+        {
+            document.getElementById('status').innerText = 'NAO LOGADO';
+            botao.innerText = 'LOGIN';
+        }
+        else
+        {
+            document.getElementById('status').innerText = 'LOGADO';
+            botao.innerText = 'LOGOUT';
+        }
+    }
+
+    botao.addEventListener('click', test);
+    check_status();
 </script>
