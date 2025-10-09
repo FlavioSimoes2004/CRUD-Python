@@ -18,7 +18,7 @@ def hello_world():
 
 @app.route('/home')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
 
 @app.route('/login')
 def loginPage():
@@ -38,16 +38,8 @@ def deletePage():
 
 # ---------------------------------- GETs
 
-@app.route('/usuarios', methods=['GET'])
-def get_usuarios():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM usuario")
-    data = cur.fetchall()
-    cur.close()
-    return jsonify(data)
-
 @app.route('/usuario', methods=['GET'])
-def get_one_user():
+def getUserId():
     email = request.args.get('email')
     senha = request.args.get('senha')
 

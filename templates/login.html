@@ -7,7 +7,7 @@
 
     <body>
         <form>
-            <p id="status">STATUS: NAO LOGADO</p>
+            <p id="status">NAO LOGADO</p>
             <label for="email">Email:</label>
             <input type="text" id="in_email" name="in_email">
             <label for="in_senha">Senha</label>
@@ -29,7 +29,7 @@
 
     function test(event){
         event.preventDefault();
-        if(userId === -1 || isNaN(userId))
+        if(userId == -1 || isNaN(userId))
         {
             const url = '/usuario?email='+email.value+'&senha='+senha.value;
             fetch(url, {
@@ -48,7 +48,7 @@
             .then(data => {
                 console.log('usuario id = ' + data.id);
                 localStorage.setItem('userId', data.id);
-                userId = localStorage.getItem('userId')
+                userId = localStorage.getItem('userId');
                 console.log('ID encontrado e setado');
                 check_status();
             })
@@ -65,7 +65,7 @@
     }
 
     function check_status(){
-        if(userId === -1 || isNaN(userId))
+        if(userId == -1 || isNaN(userId))
         {
             document.getElementById('status').innerText = 'NAO LOGADO';
             botao.innerText = 'LOGIN';
