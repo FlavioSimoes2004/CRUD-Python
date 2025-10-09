@@ -38,10 +38,11 @@ def deletePage():
 
 # ---------------------------------- GETs
 
-@app.route('/usuario', methods=['GET'])
+@app.route('/usuario', methods=['POST'])
 def getUserId():
-    email = request.args.get('email')
-    senha = request.args.get('senha')
+    data = request.get_json()
+    email = data.get('email')
+    senha = data.get('senha')
 
     if not email or not senha:
         return jsonify({'error': 'Email e senha são obrigatórios'}), 400

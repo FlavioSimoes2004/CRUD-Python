@@ -64,6 +64,47 @@
         }
     }
 
+    function test2(){
+        event.preventDefault();
+        if(userId == -1 || isNaN(userId))
+        {
+            const data = {
+                email: email.value,
+                senha: senha.value
+            };
+    
+            fetch('/usuario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if(!response.ok){
+                    alert('error ao criar usuario');
+                    throw new Error('criacao usuario');
+                }
+    
+                return response.json();
+            })
+            .then(data => {
+                localStorage.setItem('userId', data.id);
+                userId = localStorage.getItem('userId');
+                check_status();
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        }
+        else
+        {
+            userId = -1;
+            localStorage.setItem('userId', -1);
+            check_status();
+        }
+    }
+
     function check_status(){
         if(userId == -1 || isNaN(userId))
         {
@@ -77,6 +118,6 @@
         }
     }
 
-    botao.addEventListener('click', test);
+    botao.addEventListener('click', test2);
     check_status();
 </script>
